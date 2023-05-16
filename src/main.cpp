@@ -19,7 +19,6 @@ int main(int argc, char **argv)
 
     std::shared_ptr<SimObject> bullet = MakeSimObjectFactory(SimObjectType::POINTMASS);
     std::shared_ptr<PointMass> bulletPtr = std::dynamic_pointer_cast<PointMass>(bullet);
-//    std::shared_ptr<PointMass> bulletPtr = std::make_shared<PointMass>();
     bulletPtr->SetVelocity(200, 200, 200); 
     bulletPtr->SetPosition(0, 1000, 0);
     SimulationObjects.push_back(bulletPtr); 

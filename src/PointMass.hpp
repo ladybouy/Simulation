@@ -11,7 +11,7 @@ enum class IntegrationMethod {Euler, RungeKutta4};
 class PointMass : public SimObject
 {
     public:
-        IntegrationMethod mIntegationMethod = IntegrationMethod::Euler;
+        IntegrationMethod mIntegrationMethod = IntegrationMethod::Euler;
         PointMass();
         ~PointMass();
         PointMass(double aMass, double aCd0);
@@ -26,8 +26,9 @@ class PointMass : public SimObject
         void SetVelocity(double aX, double aY, double aZ);
         void SetAcceleration(double aX, double aY, double aZ);
         void CalcForces();
-        void UpdateBodyEuler(double timeStep);
-        void UpdateRK4(double timeStep);
+        void Update(double aTimeStep) override;
+        void UpdateBodyEuler(double aTimeStep);
+        void UpdateRK4(double aTimeStep);
     private:
         double mMass;
         double mCd0;

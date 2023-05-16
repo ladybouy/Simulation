@@ -8,7 +8,23 @@ PointMass::PointMass(double aMass, double aCd0)
 
 PointMass::~PointMass() {}
 
+void PointMass::Update(double aTimeStep)
+{
+    switch (mIntegrationMethod) 
+    {
+        case IntegrationMethod::Euler:
+            UpdateBodyEuler(aTimeStep);
+            break;
+        case IntegrationMethod::RungeKutta4:
+            UpdateRK4(aTimeStep);
+            break;
+        default:
+            break; 
+    }
+}
+
 double PointMass::Mass() { return mMass; }
+
 double PointMass::Cd0() { return mCd0; }
 
 Vec3D PointMass::Position() { return mPosition; }
@@ -33,18 +49,21 @@ void PointMass::SetPosition(double aX, double aY, double aZ)
     mPosition.SetY(aY); 
     mPosition.SetZ(aZ); 
 }
+
 void PointMass::SetVelocity(double aX, double aY, double aZ)
 {
     mVelocity.SetX(aX);
     mVelocity.SetY(aY);
     mVelocity.SetZ(aZ);
 }
+
 void PointMass::SetAcceleration(double aX, double aY, double aZ)
 {
     mAcceleration.SetX(aX);
     mAcceleration.SetY(aY);
     mAcceleration.SetZ(aZ);
 }
+
 void PointMass::CalcForces()
 {
     // Reset forces:
@@ -54,9 +73,6 @@ void PointMass::CalcForces()
 
     // Aggregate forces:
     mForces += mGravityForce;
-
-    Vec3D dragVector;
-    double drag;
 }
 
 void PointMass::UpdateBodyEuler(double timeStep)
@@ -74,9 +90,12 @@ void PointMass::UpdateBodyEuler(double timeStep)
     deltaPosition = mVelocity * timeStep;
     mPosition += deltaPosition;
 }
+
 void PointMass::UpdateRK4(double timeStep)
 {
+    Vec3D force;
     Vec3D acceleration;
     Vec3D deltaVelocity; 
     Vec3D deltaPosition; 
+    Vec3D k1, k2, k3, k4;
 }

@@ -8,6 +8,7 @@ class SimObject
 {
     public: 
         virtual ~SimObject() {}
+        virtual void Update(double aTimeStep);
 };
 
 enum class SimObjectType {POINTMASS, RIGIDBODY};

@@ -30,11 +30,11 @@ Vec3D operator+(const Vec3D& aVector1, const Vec3D aVector2);
 
 Vec3D operator-(const Vec3D& aVector1, const Vec3D aVector2);
 
-Vec3D operator*(const Vec3D& aVector, double aScalar);
+Vec3D operator*(const Vec3D& aVector, const double aScalar);
 
 double operator*(const Vec3D& aVector1, const Vec3D aVector2);
 
-Vec3D operator/(Vec3D& aVector, double aScalar);
+Vec3D operator/(Vec3D& aVector, const double aScalar);
 
 Vec3D operator^(Vec3D& aVector1, Vec3D& aVector2);
 

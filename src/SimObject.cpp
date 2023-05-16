@@ -2,6 +2,8 @@
 #include "PointMass.hpp"
 #include <iostream>
 
+void SimObject::Update(double aTimeStep) {}
+
 std::shared_ptr<SimObject> MakeSimObjectFactory(SimObjectType aType)
 {
     if (SimObjectType::POINTMASS == aType)
