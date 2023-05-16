@@ -10,6 +10,7 @@ PointMass::~PointMass() {}
 
 void PointMass::Update(double aTimeStep)
 {
+    CalcForces();
     switch (mIntegrationMethod) 
     {
         case IntegrationMethod::Euler:

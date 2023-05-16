@@ -3,10 +3,7 @@
 #include <memory>
 #include <string>
 #include <vector>
-#include "Vec3D.hpp"
 #include "Simulation.hpp"
-#include "PointMass.hpp"
-#include "SimObject.hpp"
 
 int main(int argc, char **argv)
 {
@@ -39,6 +36,7 @@ int main(int argc, char **argv)
             trajectoryFile << timeCounter << "," << bulletPtr->Position().X() << "," << bulletPtr->Position().Z() << "," << bulletPtr->Position().Y() << "\n";
         }
     }
+
     trajectoryFile.close();
 
     return 0;
