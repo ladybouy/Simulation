@@ -99,7 +99,14 @@ Vec3D operator*(const Vec3D& aVector, const double aScalar)
                  aVector.Z() * aScalar);
 }
 
-Vec3D operator/(Vec3D& aVector, const double aScalar)
+Vec3D operator*(const double aScalar, const Vec3D& aVector) 
+{
+    return Vec3D(aVector.X() * aScalar,
+                 aVector.Y() * aScalar,
+                 aVector.Z() * aScalar);
+}
+
+Vec3D operator/(const Vec3D& aVector, const double aScalar)
 {
     return Vec3D(aVector.X() / aScalar,
                  aVector.Y() / aScalar,

@@ -76,7 +76,7 @@ void PointMass::CalcForces()
     mForces += mGravityForce;
 }
 
-void PointMass::UpdateBodyEuler(double timeStep)
+void PointMass::UpdateBodyEuler(double aTimeStep)
 {
     Vec3D acceleration;
     Vec3D deltaVelocity; 
@@ -85,18 +85,27 @@ void PointMass::UpdateBodyEuler(double timeStep)
     // Integrate the equations of motion
     acceleration = mForces / mMass;
 
-    deltaVelocity = acceleration * timeStep;
+    deltaVelocity = acceleration * aTimeStep;
     mVelocity +=  deltaVelocity;
     
-    deltaPosition = mVelocity * timeStep;
+    deltaPosition = mVelocity * aTimeStep;
     mPosition += deltaPosition;
 }
 
-void PointMass::UpdateRK4(double timeStep)
+void PointMass::UpdateRK4(double aTimeStep)
 {
     Vec3D force;
     Vec3D acceleration;
     Vec3D deltaVelocity; 
     Vec3D deltaPosition; 
     Vec3D k1, k2, k3, k4;
+
+    acceleration = mForces / mMass;
+    k1 = acceleration * aTimeStep;
+    k2 = k1 / 2;
+    k3 = k2 / 2;
+    k4 = k3 ;
+
+    mVelocity += (k1 + 2*k2 + 2*k3 + k4) / 6;
+    mPosition = mPosition + mVelocity * aTimeStep;
 }
