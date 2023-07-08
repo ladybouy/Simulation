@@ -3,8 +3,7 @@
 
 #include "Vec3D.hpp"
 #include "SimObject.hpp"
-
-#define GRAVITY_ACCELERATION -9.81
+#include "constants.hpp"
 
 enum class IntegrationMethod {Euler, RungeKutta4};
 
