@@ -30,8 +30,18 @@ void Vec3D::Normalize()
 {
     double magnitude = std::sqrt(mX*mX + mY*mY + mZ*mZ);
     mX /= magnitude;
-    mX /= magnitude;
-    mX /= magnitude;
+    mY /= magnitude;
+    mZ /= magnitude;
+}
+
+Vec3D Vec3D::Normal()
+{
+    double magnitude = std::sqrt(mX*mX + mY*mY + mZ*mZ);
+    Vec3D normalVec3D = Vec3D();
+    normalVec3D.SetX(mX/magnitude);
+    normalVec3D.SetY(mY/magnitude);
+    normalVec3D.SetZ(mZ/magnitude);
+    return normalVec3D;
 }
 
 void Vec3D::Reverse()

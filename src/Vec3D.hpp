@@ -2,6 +2,7 @@
 #define VEC3D_H
 
 #include <iostream>
+#include <cmath>
 
 class Vec3D
 {
@@ -15,6 +16,7 @@ public:
     void SetY(double aY);
     void SetZ(double aZ);
     double Magnitude();
+    Vec3D Normal();
     void Normalize();
     void Reverse();
     Vec3D operator+=(const Vec3D &other);
