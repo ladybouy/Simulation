@@ -5,7 +5,7 @@
 #include "SimObject.hpp"
 #include "constants.hpp"
 
-enum class IntegrationMethod {Euler, RungeKutta4};
+enum class IntegrationMethod {Euler, MidPoint, RungeKutta4};
 
 class PointMass : public SimObject
 {
@@ -30,7 +30,8 @@ class PointMass : public SimObject
         Vec3D CalcDrag(Vec3D aVelocity, double aDragCoefficient);
         Vec3D CalcForces(Vec3D aVelocity);
         void Update(double aTimeStep) override;
-        void UpdateBodyEuler(double aTimeStep);
+        void UpdateEuler(double aTimeStep);
+        void UpdateMidPointEuler(double aTimeStep);
         void UpdateRK4(double aTimeStep);
     private:
         double mMass;

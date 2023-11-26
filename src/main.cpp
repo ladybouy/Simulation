@@ -11,19 +11,24 @@
 int main(int argc, char **argv)
 {
     // Constants
-    double altitude = 0;      // m
-    double mass     = 0.145;  // kg
-    double diameter = 0.075;  // m
-    double timeStep = 0.01;
-    double density  = 1.225;  // kg/m^3
-
-//    double dragConstant = (density * M_PI / 16 * std::pow(diameter,2));
+    double mass         = 0.145;  // kg
+    double diameter     = 0.075;  // m
+    double timeStep     = 0.01;
+    double density      = 1.225;  // kg/m^3
+    bool   dragOn       = false;
     double dragConstant = 0;
 
+    if (dragOn)
+    {
+        dragConstant = (density * M_PI / 16 * std::pow(diameter,2));
+    }
+
     // Initial Conditions
+    double altitude    = 0;      // m
     double velocity    = 30;  // m/s
     double gamma       = 45;  // deg
     double timeCounter = 0;
+
     std::cout << "#####################   Initializing Simulation   #####################" << '\n' << '\n';
 
     std::shared_ptr<SimObject> bullet = MakeSimObjectFactory(SimObjectType::POINTMASS);
@@ -32,7 +37,7 @@ int main(int argc, char **argv)
     bulletPtr->SetMass(mass);
     bulletPtr->SetVelocity(velocity*std::cos(gamma*DEG_TO_RAD), velocity*std::sin(gamma*DEG_TO_RAD), 0); 
     bulletPtr->SetPosition(0, altitude, 0);
-    bulletPtr->mIntegrationMethod = IntegrationMethod::RungeKutta4;
+    bulletPtr->mIntegrationMethod = IntegrationMethod::MidPoint;
     SimulationObjects.push_back(bulletPtr); 
     std::ofstream trajectoryFile ("trajectory.csv");
 

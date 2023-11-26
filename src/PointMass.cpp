@@ -1,10 +1,10 @@
 #include "PointMass.hpp"
-#include "constants.hpp"
+
 PointMass::PointMass()
-    : mMass(1), mCd0(0), mPosition(0,0,0), mVelocity(0,0,0), mAcceleration(0,0,0), mGravityForce(0,mMass*GRAVITY_ACCELERATION,0) {}
+    : mMass(1), mCd0(0), mPosition(0,0,0), mVelocity(0,0,0), mAcceleration(0,0,0), mGravityForce(0,-mMass*GRAVITY_ACCELERATION,0) {}
 
 PointMass::PointMass(double aMass, double aCd0)
-    : mMass(aMass), mCd0(aCd0), mGravityForce(0,mMass*GRAVITY_ACCELERATION,0) {}
+    : mMass(aMass), mCd0(aCd0), mGravityForce(0, -mMass*GRAVITY_ACCELERATION,0) {}
 
 PointMass::~PointMass() {}
 
@@ -13,7 +13,10 @@ void PointMass::Update(double aTimeStep)
     switch (mIntegrationMethod) 
     {
         case IntegrationMethod::Euler:
-            UpdateBodyEuler(aTimeStep);
+            UpdateEuler(aTimeStep);
+            break;
+        case IntegrationMethod::MidPoint:
+            UpdateMidPointEuler(aTimeStep);
             break;
         case IntegrationMethod::RungeKutta4:
             UpdateRK4(aTimeStep);
@@ -87,24 +90,36 @@ Vec3D PointMass::CalcForces(Vec3D aVelocity)
     mForces.SetZ(0);
 
     // Gravity Force force
-    mGravityForce.SetY(mMass*GRAVITY_ACCELERATION);
+    mGravityForce.SetY(-mMass*GRAVITY_ACCELERATION);
 
     // Drag force
-    Vec3D dragForce = CalcDrag(mVelocity, mCd0);
+    Vec3D dragForce = CalcDrag(aVelocity, mCd0);
 
+    // Lift Force
+    // Vec3 liftForce = CalcLift(mMass, aVelocity.Magnitude(), alphaCmd, altitude)
+    
     // Aggregate forces:
     mForces += mGravityForce;
     mForces += dragForce;
+
     return mForces;
 }
 
-void PointMass::UpdateBodyEuler(double aTimeStep)
+void PointMass::UpdateEuler(double aTimeStep)
 {
     Vec3D acceleration;
     // Integrate thse equations of motion
     acceleration = CalcForces(mVelocity) / mMass;
     mVelocity +=  acceleration * aTimeStep;
     mPosition +=  mVelocity * aTimeStep;
+}
+
+void PointMass::UpdateMidPointEuler(double aTimeStep)
+{
+    Vec3D velocity1 = CalcForces(mVelocity) *  aTimeStep / mMass;
+    Vec3D velocity2 = CalcForces(mVelocity + 0.5 * velocity1) * aTimeStep / mMass;
+    mPosition += (mVelocity + 0.5 * velocity1) * aTimeStep;
+    mVelocity += velocity2;
 }
 
 void PointMass::UpdateRK4(double aTimeStep)
@@ -129,6 +144,6 @@ void PointMass::UpdateRK4(double aTimeStep)
     positionK3 = (mVelocity + velocityK2 / 2) * aTimeStep;
     positionK4 = (mVelocity + velocityK3) * aTimeStep;
 
-    mVelocity += (velocityK1 + 2 * (velocityK2 + velocityK2) + velocityK4) / 6;
-    mPosition += (positionK1 + 2 * (positionK2 + positionK2) + positionK4) / 6;
+    mVelocity += (velocityK1 + 2 * (velocityK2 + velocityK3) + velocityK4) / 6;
+    mPosition += (positionK1 + 2 * (positionK2 + positionK3) + positionK4) / 6;
 }
